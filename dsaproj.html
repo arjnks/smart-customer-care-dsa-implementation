@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Complaint Redressal System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f7fe;
+            --surface-color: #ffffff;
+            --primary-color: #7B68EE; /* MediumSlateBlue */
+            --primary-light: #dcd6ff;
+            --text-color: #212529;
+            --subtle-text: #6c757d;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .main-title {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .app-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .container {
+            background-color: var(--surface-color);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            flex: 1;
+            min-width: 350px;
+            max-width: 500px;
+            transition: all 0.3s ease;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 0;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--subtle-text);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            font-family: var(--font-family);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.85rem;
+            border-radius: 8px;
+            border: none;
+            background-color: var(--primary-color);
+            color: white;
+            font-family: var(--font-family);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        button:hover {
+            background-color: #6a5acd; /* Darker SlateBlue */
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #resolveButton {
+            background-color: #20c997; /* Teal */
+        }
+        #resolveButton:hover {
+            background-color: #1baa80;
+        }
+
+        .complaint-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 1.5rem;
+        }
+
+        .complaint-item {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 5px solid;
+            background-color: var(--bg-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .complaint-item:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow);
+        }
+
+        .complaint-item.severity-1 { border-color: #dc3545; } /* Red */
+        .complaint-item.severity-2 { border-color: #fd7e14; } /* Orange */
+        .complaint-item.severity-3 { border-color: #ffc107; } /* Yellow */
+        .complaint-item.severity-4 { border-color: #0d6efd; } /* Blue */
+        .complaint-item.severity-5 { border-color: #6c757d; } /* Grey */
+
+        .complaint-item-resolved {
+            border-color: #20c997; /* Teal */
+            background-color: #f0fdf8;
+            text-decoration: line-through;
+            color: var(--subtle-text);
+        }
+
+        .complaint-item strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: var(--text-color);
+        }
+
+        .complaint-details {
+            font-size: 0.85rem;
+            color: var(--subtle-text);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease forwards; }
+        .fade-out { animation: fadeOut 0.3s ease forwards; }
+
+    </style>
+</head>
+<body>
+
+    <h1 class="main-title">Smart Complaint Redressal System</h1>
+
+    <div class="app-container">
+        <div class="container">
+            <h2>Register Complaint</h2>
+            <div class="form-group">
+                <label for="description">Complaint Description</label>
+                <input type="text" id="description" placeholder="e.g., Internet is down">
+            </div>
+            <div class="form-group">
+                <label for="userType">User Type</label>
+                <select id="userType">
+                    <option value="Normal">Normal User</option>
+                    <option value="Premium">Premium User</option>
+                </select>
+            </div>
+            <button onclick="addComplaint()">Submit Complaint</button>
+        </div>
+
+        <div class="container">
+            <h2>Active Complaints</h2>
+            <button id="resolveButton" onclick="resolveNextComplaint()">Serve Highest Priority Complaint</button>
+            <ul id="queue" class="complaint-list">
+                </ul>
+            
+            <h2 style="margin-top: 2rem;">Resolved Log</h2>
+            <ul id="log" class="complaint-list">
+                </ul>
+        </div>
+    </div>
+
+<script>
+    let complaintQueue = [];
+    let resolvedLog = [];
+    let complaintIdCounter = 101;
+
+    const severityKeywords = {
+        1: ['down', 'outage', 'no internet', 'no power', 'emergency', 'not working', 'unable to access', 'critical'],
+        2: ['slow', 'lagging', 'intermittent', 'error', 'crashing', 'disconnecting'],
+        3: ['question', 'help', 'assistance', 'inquiry', 'how to'],
+        4: ['billing', 'update', 'suggestion', 'feedback', 'request']
+    };
+
+    function autoAssignSeverity(description) {
+        const text = description.toLowerCase();
+        for (const severity in severityKeywords) {
+            if (severityKeywords[severity].some(keyword => text.includes(keyword))) {
+                return parseInt(severity);
+            }
+        }
+        return 5;
+    }
+
+    function calculatePriority(complaint) {
+        const userWeight = (complaint.userType === 'Premium') ? -2 : 0;
+        return complaint.severity + userWeight;
+    }
+
+    function addComplaint() {
+        const description = document.getElementById('description').value;
+        const userType = document.getElementById('userType').value;
+
+        if (!description) {
+            alert('Please enter a complaint description.');
+            return;
+        }
+
+        const severity = autoAssignSeverity(description);
+
+        const newComplaint = {
+            id: complaintIdCounter++,
+            description: description,
+            userType: userType,
+            severity: severity,
+            timestamp: new Date()
+        };
+
+        complaintQueue.push(newComplaint);
+        complaintQueue.sort((a, b) => calculatePriority(a) - calculatePriority(b));
+
+        updateDisplay();
+        document.getElementById('description').value = '';
+    }
+
+    function resolveNextComplaint() {
+        if (complaintQueue.length === 0) {
+            alert('No pending complaints!');
+            return;
+        }
+
+        // Find the top complaint's HTML element to animate it out
+        const topComplaintId = complaintQueue[0].id;
+        const complaintElement = document.getElementById(`complaint-${topComplaintId}`);
+        
+        if (complaintElement) {
+            complaintElement.classList.add('fade-out');
+            
+            // Wait for the animation to finish before updating the data and UI
+            setTimeout(() => {
+                const servedComplaint = complaintQueue.shift();
+                resolvedLog.unshift(servedComplaint); // Add to the top of the log
+                updateDisplay();
+            }, 300); // Must match the animation duration
+        }
+    }
+
+    function updateDisplay() {
+        const queueList = document.getElementById('queue');
+        const logList = document.getElementById('log');
+
+        queueList.innerHTML = '';
+        logList.innerHTML = '';
+
+        complaintQueue.forEach(c => {
+            const priorityValue = calculatePriority(c);
+            const listItem = document.createElement('li');
+            listItem.id = `complaint-${c.id}`;
+            listItem.className = `complaint-item severity-${c.severity} fade-in`;
+            listItem.innerHTML = `
+                <strong>#${c.id}: ${c.description}</strong>
+                <div class="complaint-details">
+                    User: ${c.userType} | Auto-Severity: ${c.severity} | Effective Priority: <strong>${priorityValue}</strong>
+                </div>
+            `;
+            queueList.appendChild(listItem);
+        });
+
+        resolvedLog.forEach(c => {
+            const listItem = document.createElement('li');
+            listItem.className = `complaint-item complaint-item-resolved fade-in`;
+            listItem.innerHTML = `
+                <strong>#${c.id}: ${c.description}</strong>
+                <div class="complaint-details">
+                    User: ${c.userType} | Severity: ${c.severity}
+                </div>
+            `;
+            logList.appendChild(listItem);
+        });
+    }
+
+    // Pre-populate with some data for a better initial view
+    function loadInitialData() {
+        complaintQueue = [
+            { id: 100, description: "Website is a bit slow", userType: "Normal", severity: 2, timestamp: new Date() },
+            { id: 99, description: "Question about my billing", userType: "Premium", severity: 4, timestamp: new Date() },
+        ];
+        complaintIdCounter = 101;
+        complaintQueue.sort((a, b) => calculatePriority(a) - calculatePriority(b));
+        updateDisplay();
+    }
+    
+    // Initial load
+    loadInitialData();
+
+</script>
+
+</body>
+</html>
